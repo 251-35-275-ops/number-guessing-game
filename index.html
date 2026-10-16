@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Number Guessing Game</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background-color: lightblue;
+            padding: 50px;
+        }
+
+        .game {
+            background-color: white;
+            width: 320px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        input {
+            padding: 10px;
+            width: 100px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="game">
+        <h2>Number Guessing Game</h2>
+
+        <p>Guess a number between 1 and 20</p>
+        <p>You have only 3 attempts!</p>
+
+        <input type="number" id="guess" min="1" max="20"
+               placeholder="Enter number">
+
+        <button onclick="checkGuess()">Guess</button>
+
+        <p id="attempts">Attempts left: 3</p>
+        <p id="result"></p>
+
+        <button onclick="restartGame()">Play Again</button>
+    </div>
+
+    <script>
+        let secretNumber = Math.floor(Math.random() * 20) + 1;
+        let attempts = 0;
+        let gameOver = false;
+
+        function checkGuess() {
+            let guess = Number(document.getElementById("guess").value);
+            let result = document.getElementById("result");
+
+            if (gameOver) {
+                result.innerHTML = "Game Over! Click Play Again.";
+                return;
+            }
+
+            if (guess < 1 || guess > 20 ||
+                document.getElementById("guess").value === "") {
+                result.innerHTML = "Enter a number from 1 to 20!";
+                return;
+            }
+
+            attempts++;
+
+            if (guess === secretNumber) {
+                result.innerHTML = "Congratulations! You Win!";
+                gameOver = true;
+            } else if (attempts === 3) {
+                result.innerHTML =
+                    "Game Over! The number was " + secretNumber;
+                gameOver = true;
+            } else if (guess < secretNumber) {
+                result.innerHTML = "Too low! Try again.";
+            } else {
+                result.innerHTML = "Too high! Try again.";
+            }
+
+            document.getElementById("attempts").innerHTML =
+                "Attempts left: " + (3 - attempts);
+
+            document.getElementById("guess").value = "";
+        }
+
+        function restartGame() {
+            secretNumber = Math.floor(Math.random() * 20) + 1;
+            attempts = 0;
+            gameOver = false;
+
+            document.getElementById("guess").value = "";
+            document.getElementById("attempts").innerHTML =
+                "Attempts left: 3";
+            document.getElementById("result").innerHTML = "";
+        }
+    </script>
+
+</body>
+</html>
